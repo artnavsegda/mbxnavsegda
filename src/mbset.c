@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <modbus.h>
+#include <modbus/modbus.h>
 #include <errno.h>
 
 int main(int argc, char *argv[])

@@ -20,7 +20,7 @@
 #include <stdlib.h>
 #include <errno.h>
 
-#include <modbus.h>
+#include <modbus/modbus.h>
 
 int main(void)
 {
