@@ -27,6 +27,15 @@ int main(void)
 	mb_mapping->tab_bits[3] = FALSE;
 	mb_mapping->tab_bits[4] = FALSE;
 
+	mb_mapping->tab_registers[0] = 0;
+	mb_mapping->tab_registers[1] = 1;
+	mb_mapping->tab_registers[2] = 2;
+	mb_mapping->tab_registers[3] = 3;
+	mb_mapping->tab_registers[4] = 4;
+	mb_mapping->tab_registers[5] = 5;
+	mb_mapping->tab_registers[6] = 6;
+	mb_mapping->tab_registers[7] = 7;
+
 	modbus_set_float(1.0, &mb_mapping->tab_registers[8]);
 	modbus_set_float(1.0, &mb_mapping->tab_registers[10]);
 	modbus_set_float(1.0, &mb_mapping->tab_registers[12]);
