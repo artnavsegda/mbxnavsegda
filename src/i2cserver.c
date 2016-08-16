@@ -6,6 +6,7 @@
 #include <sys/ioctl.h>
 #include <linux/i2c-dev.h>
 #include <modbus/modbus.h>
+#include <stdbool.h>
 
 #define _BV(bit) (1 << (bit))
 
