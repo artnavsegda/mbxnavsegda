@@ -86,7 +86,8 @@ POST_INSTALL = :
 NORMAL_UNINSTALL = :
 PRE_UNINSTALL = :
 POST_UNINSTALL = :
-bin_PROGRAMS = mbset$(EXEEXT) mbget$(EXEEXT) server$(EXEEXT)
+bin_PROGRAMS = mbset$(EXEEXT) mbget$(EXEEXT) server$(EXEEXT) \
+	i2cserver$(EXEEXT)
 subdir = src
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/configure.ac
@@ -99,6 +100,9 @@ CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 am__installdirs = "$(DESTDIR)$(bindir)"
 PROGRAMS = $(bin_PROGRAMS)
+i2cserver_SOURCES = i2cserver.c
+i2cserver_OBJECTS = i2cserver.$(OBJEXT)
+i2cserver_LDADD = $(LDADD)
 mbget_SOURCES = mbget.c
 mbget_OBJECTS = mbget.$(OBJEXT)
 mbget_LDADD = $(LDADD)
@@ -136,8 +140,8 @@ AM_V_CCLD = $(am__v_CCLD_@AM_V@)
 am__v_CCLD_ = $(am__v_CCLD_@AM_DEFAULT_V@)
 am__v_CCLD_0 = @echo "  CCLD    " $@;
 am__v_CCLD_1 = 
-SOURCES = mbget.c mbset.c $(server_SOURCES)
-DIST_SOURCES = mbget.c mbset.c $(server_SOURCES)
+SOURCES = i2cserver.c mbget.c mbset.c $(server_SOURCES)
+DIST_SOURCES = i2cserver.c mbget.c mbset.c $(server_SOURCES)
 am__can_run_installinfo = \
   case $$AM_UPDATE_INFO_DIR in \
     n|no|NO) false;; \
@@ -329,6 +333,10 @@ uninstall-binPROGRAMS:
 clean-binPROGRAMS:
 	-test -z "$(bin_PROGRAMS)" || rm -f $(bin_PROGRAMS)
 
+i2cserver$(EXEEXT): $(i2cserver_OBJECTS) $(i2cserver_DEPENDENCIES) $(EXTRA_i2cserver_DEPENDENCIES) 
+	@rm -f i2cserver$(EXEEXT)
+	$(AM_V_CCLD)$(LINK) $(i2cserver_OBJECTS) $(i2cserver_LDADD) $(LIBS)
+
 mbget$(EXEEXT): $(mbget_OBJECTS) $(mbget_DEPENDENCIES) $(EXTRA_mbget_DEPENDENCIES) 
 	@rm -f mbget$(EXEEXT)
 	$(AM_V_CCLD)$(LINK) $(mbget_OBJECTS) $(mbget_LDADD) $(LIBS)
@@ -347,6 +355,7 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/i2cserver.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/mbget.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/mbset.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/server.Po@am__quote@
