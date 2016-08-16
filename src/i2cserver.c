@@ -10,7 +10,8 @@
 
 #define _BV(bit) (1 << (bit))
 
-#define U3_IGNIT 1
+//u1
+#define U1 0x18
 #define SERVO_1_LEFT_OUT 7
 #define SERVO_1_RIGHT_OUT 6
 #define SERVO_1_LEFT_IN 5
@@ -19,6 +20,9 @@
 #define SERVO_2_LEFT_OUT 3
 #define SERVO_2_RIGHT_OUT 2
 #define SERVO_2_LEFT_IN 1
+#define RELAY_1 0
+//u2
+#define U2 0x19
 #define SERVO_2_RIGHT_IN 7
 
 #define SERVO_3_LEFT_OUT 6
@@ -28,8 +32,16 @@
 
 #define SERVO_4_LEFT_OUT 2
 #define SERVO_4_RIGHT_OUT 1
+#define RELAY_2 0
+//u3
+#define U3 0x1a
 #define SERVO_4_LEFT_IN 7
 #define SERVO_4_RIGHT_IN 6
+#define VALVE_ZM 2 //x10:3
+#define VALVE_CM 3 //x10:4
+#define VALVE_TE 4 //x10:5
+#define VALVE_RE 5 //x10:6
+#define U3_IGNIT 1
 
 #define STARTLEVEL 5
 #define CELLDELAY 7
@@ -65,6 +77,7 @@ enum pca9557_direction {
 };
 
 int modenumber = 0;
+int fd;
 
 void pca9557_init(int fd, char addr)
 {
@@ -187,23 +200,23 @@ void entermode(int modetoenter)
 		case STARTLEVEL:
 		break;
 		case CELLDELAY:
-			pca9557_set_pin_level(U1, SERVO_1_LEFT_OUT, false);
-			pca9557_set_pin_level(U1, SERVO_1_RIGHT_OUT, true);
+			pca9557_set_pin_level(fd, 0x18, SERVO_1_LEFT_OUT, false);
+			pca9557_set_pin_level(fd, 0x18, SERVO_1_RIGHT_OUT, true);
 		break;
 		case CELLLEVEL:
-			pca9557_set_pin_level(U1, SERVO_1_LEFT_OUT, false);
-			pca9557_set_pin_level(U1, SERVO_1_RIGHT_OUT, true);
+			pca9557_set_pin_level(fd, 0x18, SERVO_1_LEFT_OUT, false);
+			pca9557_set_pin_level(fd, 0x18, SERVO_1_RIGHT_OUT, true);
 		break;
 		case ZERODELAY:
 			//writecoil(100, 0);
 			//writecoil(4, 1);
-			pca9557_set_pin_level(0x1a, VALVE_ZM, true);
+			pca9557_set_pin_level(fd, 0x1a, VALVE_ZM, true);
 		return;
 		break;
 		case ZEROTEST:
 			//writecoil(100, 0);
 			//writecoil(4, 1);
-			pca9557_set_pin_level(0x1a, VALVE_ZM, true);
+			pca9557_set_pin_level(fd, 0x1a, VALVE_ZM, true);
 		break;
 		case PURGE:
 			//writecoil(102, false);
@@ -214,10 +227,10 @@ void entermode(int modetoenter)
 		break;
 		case ELEMENTALMERCURYDELAY:
 			//writecoil(101, false);
-			pca9557_set_pin_level(U3, VALVE_TE, true);
+			pca9557_set_pin_level(fd, 0x1a, VALVE_TE, true);
 		break;
 		case ELEMENTALMERCURY:
-			pca9557_set_pin_level(U3, VALVE_TE, true);
+			pca9557_set_pin_level(fd, 0x1a, VALVE_TE, true);
 		break;
 		case PRECALIBRATIONDELAY:
 			//writecoil(99, false);
@@ -228,12 +241,12 @@ void entermode(int modetoenter)
 		case CALIBRATION:
 			//writecoil(99, false);
 			//writecoil(4, 1);
-			pca9557_set_pin_level(U3, VALVE_CM, true);
+			pca9557_set_pin_level(fd, 0x1a, VALVE_CM, true);
 		break;
 		case POSTCALIBRATIONDELAY:
 			//writecoil(99, false);
 			//writecoil(4, 1);
-			pca9557_set_pin_level(U3, VALVE_CM, true);
+			pca9557_set_pin_level(fd, 0x1a, VALVE_CM, true);
 		break;
 		default:
 		break;
@@ -253,14 +266,14 @@ void exitmode(int modetoexit)
 		case CELLLEVEL:
 			//celllevelavg = average(runner,CELLLEVELSECONDS,runflag,MEMORYUSE)/CELLLEVELSECONDS;
 			//celltempavg = average(temprunner,CELLLEVELSECONDS,temprunflag,CELLLEVELSECONDS)/CELLLEVELSECONDS;
-			pca9557_set_pin_level(U1, SERVO_1_LEFT_OUT, true);
-			pca9557_set_pin_level(U1, SERVO_1_RIGHT_OUT, false);
+			pca9557_set_pin_level(fd, 0x18, SERVO_1_LEFT_OUT, true);
+			pca9557_set_pin_level(fd, 0x18, SERVO_1_RIGHT_OUT, false);
 		break;
 		case ZERODELAY:
 		break;
 		case ZEROTEST:
 			//zerolevelavg = average(runner,ZEROTESTSECONDS,runflag,MEMORYUSE)/ZEROTESTSECONDS;
-			pca9557_set_pin_level(U3, VALVE_ZM, false);
+			pca9557_set_pin_level(fd, 0x1a, VALVE_ZM, false);
 			//writecoil(4, false);
 		break;
 		case PURGE:
@@ -273,20 +286,20 @@ void exitmode(int modetoexit)
 		case ELEMENTALMERCURYDELAY:
 		break;
 		case ELEMENTALMERCURY:
-                        pca9557_set_pin_level(U3, VALVE_TE, false);
+			pca9557_set_pin_level(fd, 0x1a, VALVE_TE, false);
 			//writecoil(5, false);
 		break;
 		case PRECALIBRATIONDELAY:
 		break;
 		case CALIBRATION:
 			//coefficent = average(runner,CALIBRATIONSECONDS,runflag,MEMORYUSE)/CALIBRATIONSECONDS;
-			pca9557_set_pin_level(U3, VALVE_CM, false);
+			pca9557_set_pin_level(fd, 0x1a, VALVE_CM, false);
 			//pca9557_set_pin_level(U1, SERVO_1_LEFT_OUT, true);
 			//pca9557_set_pin_level(U1, SERVO_1_RIGHT_OUT, false);
 			//writecoil(5, false);
 		break;
 		case POSTCALIBRATIONDELAY:
-			pca9557_set_pin_level(U3, VALVE_CM, true);
+			pca9557_set_pin_level(fd, 0x1a, VALVE_CM, true);
 			//writecoil(5, false);
 		break;
 		default:
@@ -303,20 +316,20 @@ void alarm_handler(int signal)
 
 int main(void)
 {
-        int socket, fd;
-        modbus_t *ctx;
-        modbus_mapping_t *mb_mapping;
+	int socket;
+	modbus_t *ctx;
+	modbus_mapping_t *mb_mapping;
 
-        signal(SIGALRM, alarm_handler);
+	signal(SIGALRM, alarm_handler);
 
-        fd = open("/dev/i2c-1",O_RDWR);
+	fd = open("/dev/i2c-1",O_RDWR);
 
-        if (fd<=1)
-        {
-                printf("error on device\n");
-                exit(1);
-        }
-        pca9557_init(fd, 0x18);
+	if (fd<=1)
+	{
+		printf("error on device\n");
+		exit(1);
+	}
+	pca9557_init(fd, 0x18);
 	pca9557_set_pin_dir(fd, 0x18, SERVO_1_LEFT_OUT, PCA9557_DIR_OUTPUT);
 	pca9557_set_pin_dir(fd, 0x18, SERVO_1_RIGHT_OUT, PCA9557_DIR_OUTPUT);
 	pca9557_set_pin_dir(fd, 0x18, SERVO_1_LEFT_IN, PCA9557_DIR_INPUT);
@@ -324,7 +337,7 @@ int main(void)
 	pca9557_set_pin_dir(fd, 0x18, SERVO_2_LEFT_OUT, PCA9557_DIR_OUTPUT);
 	pca9557_set_pin_dir(fd, 0x18, SERVO_2_RIGHT_OUT, PCA9557_DIR_OUTPUT);
 	pca9557_set_pin_dir(fd, 0x18, SERVO_2_LEFT_IN, PCA9557_DIR_INPUT);
-	pca9557_init(0x19);
+	pca9557_init(fd, 0x19);
 	pca9557_set_pin_dir(fd, 0x19, SERVO_2_RIGHT_IN, PCA9557_DIR_INPUT);
 	pca9557_set_pin_dir(fd, 0x19, SERVO_3_LEFT_OUT, PCA9557_DIR_OUTPUT);
 	pca9557_set_pin_dir(fd, 0x19, SERVO_3_RIGHT_OUT, PCA9557_DIR_OUTPUT);
@@ -332,7 +345,7 @@ int main(void)
 	pca9557_set_pin_dir(fd, 0x19, SERVO_3_RIGHT_IN, PCA9557_DIR_INPUT);
 	pca9557_set_pin_dir(fd, 0x19, SERVO_4_LEFT_OUT, PCA9557_DIR_OUTPUT);
 	pca9557_set_pin_dir(fd, 0x19, SERVO_4_RIGHT_OUT, PCA9557_DIR_OUTPUT);
-	pca9557_init(0x1a);
+	pca9557_init(fd, 0x1a);
 	pca9557_set_pin_dir(fd, 0x1a, SERVO_4_LEFT_IN, PCA9557_DIR_INPUT);
 	pca9557_set_pin_dir(fd, 0x1a, SERVO_4_RIGHT_IN, PCA9557_DIR_INPUT);
 	pca9557_set_pin_dir(fd, 0x1a, U3_IGNIT, PCA9557_DIR_OUTPUT);
