@@ -191,6 +191,7 @@ int main(void)
 		int rc;
 
 		modbus_set_float((float)modenumber, &mb_mapping->tab_registers[8]);
+		modbus_set_float((float)rand()/(float)RAND_MAX, &mb_mapping->tab_registers[10]);
 
 		rc = modbus_receive(ctx, query);
 		if (rc != -1)
