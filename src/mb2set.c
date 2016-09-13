@@ -37,6 +37,7 @@ int main(int argc, char *argv[])
 
 	printf("ip = %hhu.%hhu.%hhu.%hhu\n",MSB(tab_reg[0]),LSB(tab_reg[0]),MSB(tab_reg[1]),LSB(tab_reg[1]));
 	printf("mac = %hhx:%hhx:%hhx:%hhx:%hhx:%hhx\n",MSB(tab_reg[2]),LSB(tab_reg[2]),MSB(tab_reg[3]),LSB(tab_reg[3]),MSB(tab_reg[4]),LSB(tab_reg[4]));
+	printf("startlevel = %hu\nprecalibrationdelay = %hu\ncalibration = %hu\npostcalibrationdelay = %hu\ncelldelay = %hu\ncelllevel = %hu\nzerodelay = %hu\nzerotest = %hu\ntotalmercurydelay = %hu\ntotalmercury = %hu\nelementalmercurydelay = %hu\nelementalmercury = %hu\npurge = %hu\n",tab_reg[5],tab_reg[6],tab_reg[7],tab_reg[8],tab_reg[9],tab_reg[10],tab_reg[11],tab_reg[12],tab_reg[13],tab_reg[14],tab_reg[15],tab_reg[16],tab_reg[17]);
 
 	modbus_close(mb);
 	modbus_free(mb);
