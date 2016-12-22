@@ -29,13 +29,13 @@ int main(int argc, char *argv[])
 	}
 
 	/* Read 5 registers from the address 10 */
-	rc = modbus_read_registers(mb, setregister, 1, tab_reg);
+	rc = modbus_read_registers(mb, setregister, 2, tab_reg);
 	if (rc == -1) {
 		fprintf(stderr, "read registers: %s\n", modbus_strerror(errno));
 		return -1;
 	}
 
-	printf("%d (0x%X)\n", tab_reg[0], tab_reg[0]);
+	printf("%f (0X%X) (0x%X)\n", modbus_get_float_badc(&tab_reg[0]), tab_reg[0], tab_reg[1]);
 
 	modbus_close(mb);
 	modbus_free(mb);
