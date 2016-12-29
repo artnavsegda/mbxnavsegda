@@ -1,1 +1,1 @@
-bin_PROGRAMS = mbsetcoil
+bin_PROGRAMS = mbsetcoil server
