@@ -4,7 +4,7 @@
 #include <errno.h>
 #include <modbus/modbus.h>
 
-int main(void)
+int main(int argc, char *argv[])
 {
 	int rc;
 	modbus_t *ctx;
