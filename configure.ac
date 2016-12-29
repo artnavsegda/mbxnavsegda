@@ -6,6 +6,6 @@ AC_PROG_CC
 AC_CHECK_HEADER(modbus/modbus.h)
 AC_CHECK_LIB([modbus],[modbus_free])
 AC_CONFIG_HEADERS([config.h])
-AC_CONFIG_FILES([Makefile src/Makefile])
+AC_CONFIG_FILES([Makefile src/Makefile src/serial/Makefile])
 AC_PREFIX_DEFAULT([/usr/local])
 AC_OUTPUT
