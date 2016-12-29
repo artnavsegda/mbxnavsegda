@@ -6,6 +6,7 @@
 
 int main(int argc, char *argv[])
 {
+	uint8_t query[MODBUS_RTU_MAX_ADU_LENGTH];
 	int rc;
 	modbus_t *ctx;
 	modbus_mapping_t *mb_mapping;
@@ -17,6 +18,7 @@ int main(int argc, char *argv[])
 	}
 
 	ctx = modbus_new_rtu(argv[1], 9600, 'N', 8, 1);
+	modbus_set_slave(ctx, 50);
 	if (ctx == NULL)
 	{
   		fprintf(stderr, "Failed to create modbus context: %s\n", modbus_strerror(errno));
@@ -42,22 +44,19 @@ int main(int argc, char *argv[])
 
 	for (;;)
 	{
-		uint8_t query[MODBUS_RTU_MAX_ADU_LENGTH];
-		int rc;
-
 		rc = modbus_receive(ctx, query);
-
 		if (rc != -1)
 		{
 			/* rc is the query size */
-			modbus_reply(ctx, query, rc, mb_mapping);
+			if (modbus_reply(ctx, query, rc, mb_mapping) == -1)
+				break;
 		}
 		else
 		{
 			/* Connection closed by the client or error */
 			modbus_close(ctx);
-			rc = modbus_connect(ctx);
-			//break;
+			//rc = modbus_connect(ctx);
+			break;
 		}
     	}
 
