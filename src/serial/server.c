@@ -23,7 +23,11 @@ int main(int argc, char *argv[])
 	{
   		fprintf(stderr, "Failed to create modbus context: %s\n", modbus_strerror(errno));
 		modbus_free(ctx);
-		return -1;
+		return 1;
+	}
+	else
+	{
+		printf("create modbus conttext ok\n");
 	}
 
 	mb_mapping = modbus_mapping_new(500, 500, 500, 500);
@@ -31,7 +35,11 @@ int main(int argc, char *argv[])
 	{
   		fprintf(stderr, "Failed to allocate the mapping: %s\n", modbus_strerror(errno));
 		modbus_free(ctx);
-		return -1;
+		return 1;
+	}
+	else
+	{
+		printf("allocate mapping ok\n");
 	}
 
 	rc = modbus_connect(ctx);
@@ -39,7 +47,11 @@ int main(int argc, char *argv[])
 	{
   		fprintf(stderr, "Failed to connect: %s\n", modbus_strerror(errno));
 		modbus_free(ctx);
-		return -1;
+		return 1;
+	}
+	else
+	{
+		printf("connect ok\n");
 	}
 
 	for (;;)
@@ -47,13 +59,11 @@ int main(int argc, char *argv[])
 		rc = modbus_receive(ctx, query);
 		if (rc != -1)
 		{
-			/* rc is the query size */
 			if (modbus_reply(ctx, query, rc, mb_mapping) == -1)
 				break;
 		}
 		else
 		{
-			/* Connection closed by the client or error */
 			modbus_close(ctx);
 			//rc = modbus_connect(ctx);
 			break;
