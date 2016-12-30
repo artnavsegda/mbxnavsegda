@@ -13,7 +13,7 @@ int main(int argc, char *argv[])
 
 	if (argc != 4)
 	{
-		printf("name ip adress register and value\n");
+		printf("name serial port register and value\n");
 		exit(1);
 	}
 	int setvalue;
