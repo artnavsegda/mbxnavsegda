@@ -50,19 +50,19 @@ int main(int argc, char *argv[])
 		printf("%40s %d\n", "Status of Zero test:", bit_reg[3]);
 		printf("%40s %d\n\n", "Status of calibration:", bit_reg[4]);
 
-		printf("%30s %f\n", "Elemental mercury:", modbus_get_float_badc(&tab_reg[16]));
-		printf("%30s %f\n", "Total mercury:", modbus_get_float_badc(&tab_reg[2]));
-		printf("%30s %f\n", "Oxidized mercury:", modbus_get_float_badc(&tab_reg[4]));
-		printf("%30s %f\n", "Monitor flow:", modbus_get_float_badc(&tab_reg[6]));
-		printf("%30s %f\n", "Vacuum:", modbus_get_float_badc(&tab_reg[8]));
-		printf("%30s %f\n", "Dilution pressure:", modbus_get_float_badc(&tab_reg[10]));
-		printf("%30s %f\n", "Bypass pressure:", modbus_get_float_badc(&tab_reg[12]));
-		printf("%30s %f\n", "Temperature of spectrometer:", modbus_get_float_badc(&tab_reg[14]));
-		printf("%30s %f\n", "Code of a current mode:", modbus_get_float_badc(&tab_reg[0]));
-		printf("%30s %f\n", "Errors and warnings:", modbus_get_float_badc(&tab_reg[20]));
-		printf("%30s %f\n", "Calibration coefficient:", modbus_get_float_badc(&tab_reg[22]));
-		printf("%30s %f\n", "PMT current:", modbus_get_float_badc(&tab_reg[24]));
-		printf("%30s %f\n", "PMT voltage:", modbus_get_float_badc(&tab_reg[32]));
+		printf("%30s %f\n", "Elemental mercury:", modbus_get_float(&tab_reg[16]));
+		printf("%30s %f\n", "Total mercury:", modbus_get_float(&tab_reg[2]));
+		printf("%30s %f\n", "Oxidized mercury:", modbus_get_float(&tab_reg[4]));
+		printf("%30s %f\n", "Monitor flow:", modbus_get_float(&tab_reg[6]));
+		printf("%30s %f\n", "Vacuum:", modbus_get_float(&tab_reg[8]));
+		printf("%30s %f\n", "Dilution pressure:", modbus_get_float(&tab_reg[10]));
+		printf("%30s %f\n", "Bypass pressure:", modbus_get_float(&tab_reg[12]));
+		printf("%30s %f\n", "Temperature of spectrometer:", modbus_get_float(&tab_reg[14]));
+		printf("%30s %f\n", "Code of a current mode:", modbus_get_float(&tab_reg[0]));
+		printf("%30s %f\n", "Errors and warnings:", modbus_get_float(&tab_reg[20]));
+		printf("%30s %f\n", "Calibration coefficient:", modbus_get_float(&tab_reg[22]));
+		printf("%30s %f\n", "PMT current:", modbus_get_float(&tab_reg[24]));
+		printf("%30s %f\n", "PMT voltage:", modbus_get_float(&tab_reg[32]));
 
 		sleep(2);
 	}

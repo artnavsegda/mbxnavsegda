@@ -37,7 +37,7 @@ int main(int argc, char *argv[])
 		return -1;
 	}
 
-	printf("%f (0x%X) (0x%X)\n", modbus_get_float_abcd(&tab_reg[0]), tab_reg[0], tab_reg[1]);
+	printf("%f (0x%X) (0x%X)\n", modbus_get_float(&tab_reg[0]), tab_reg[0], tab_reg[1]);
 
 	modbus_close(mb);
 	modbus_free(mb);
