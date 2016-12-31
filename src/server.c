@@ -12,7 +12,7 @@ int main(void)
 	modbus_t *ctx;
 	modbus_mapping_t *mb_mapping;
 
-	ctx = modbus_new_tcp("127.0.0.1", 502);
+	ctx = modbus_new_tcp("127.0.0.1", 1100);
 
 	if (ctx == NULL)
 	{
@@ -38,7 +38,7 @@ int main(void)
 	}
 
 	socket = modbus_tcp_listen(ctx, 1);
-	if (ctx == -1)
+	if (socket == -1)
 	{
 		fprintf(stderr, "Failed to create socket: %s\n", modbus_strerror(errno));
 		modbus_free(ctx);
