@@ -28,6 +28,8 @@ int main(int argc, char *argv[])
 		return -1;
 	}
 
+	modbus_set_slave(mb, 50);
+
 	/* Read 5 registers from the address 10 */
 	rc = modbus_read_registers(mb, setregister, 1, tab_reg);
 	if (rc == -1) {

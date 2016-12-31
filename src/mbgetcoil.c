@@ -19,7 +19,7 @@ int main(int argc, char *argv[])
 	int setregister;
 	sscanf(argv[2],"%d",&setregister);
 
-	mb = modbus_new_tcp(argv[1], 502);
+	mb = modbus_new_tcp(argv[1], 1100);
 	if (modbus_connect(mb) == -1)
 	{
 		fprintf(stderr, "modbus connect: %s\n", modbus_strerror(errno));
