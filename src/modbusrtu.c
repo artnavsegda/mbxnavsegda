@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <modbus.h>
+#include <modbus/modbus.h>
 #include <errno.h>
 
 int main(int argc, char *argv[])
@@ -16,8 +16,8 @@ int main(int argc, char *argv[])
 		exit(1);
 	}
 
-	mb = modbus_new_rtu(argv[1], 115200, 'N', 8, 1);
-	modbus_set_slave(mb, 1);
+	mb = modbus_new_rtu(argv[1], 9600, 'N', 8, 1);
+	modbus_set_slave(mb, 50);
 	modbus_rtu_set_serial_mode(mb, MODBUS_RTU_RS232);
 	if (modbus_connect(mb) == -1)
 	{
@@ -27,15 +27,13 @@ int main(int argc, char *argv[])
 	}
 
 	/* Read 5 registers from the address 10 */
-	rc = modbus_read_registers(mb, 0, 10, tab_reg);
+	rc = modbus_read_registers(mb, 360, 2, tab_reg);
 	if (rc == -1) {
 		fprintf(stderr, "%s\n", modbus_strerror(errno));
 		return -1;
 	}
 
-	for (i=0; i < rc; i++) {
-		printf("reg[%d]=%d (0x%X)\n", i, tab_reg[i], tab_reg[i]);
-	}
+	printf("%f (0X%X) (0x%X)\n", modbus_get_float(&tab_reg[0]), tab_reg[0], tab_reg[1]);
 
 	modbus_close(mb);
 	modbus_free(mb);
