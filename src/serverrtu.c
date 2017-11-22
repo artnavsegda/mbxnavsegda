@@ -4,15 +4,23 @@
 #include <errno.h>
 #include <modbus/modbus.h>
 
-int main(void)
+int main(int argc, char *argv[])
 {
-	uint8_t query[MODBUS_TCP_MAX_ADU_LENGTH];
+	uint8_t query[MODBUS_RTU_MAX_ADU_LENGTH];
 	int rc;
 	int socket;
 	modbus_t *ctx;
 	modbus_mapping_t *mb_mapping;
 
-	ctx = modbus_new_tcp("127.0.0.1", 1100);
+	if (argc == 1)
+	{
+		printf("name serial port\n");
+		exit(1);
+	}
+
+	ctx = modbus_new_rtu(argv[1], 9600, 'N', 8, 1);
+	modbus_set_slave(ctx, 50);
+	modbus_rtu_set_serial_mode(ctx, MODBUS_RTU_RS232);
 
 	if (ctx == NULL)
 	{
@@ -25,7 +33,7 @@ int main(void)
 		printf("create modbus conttext ok\n");
 	}
 
-	mb_mapping = modbus_mapping_new(500, 500, 500, 500);
+	mb_mapping = modbus_mapping_new(10, 10, 10, 10);
 	if (mb_mapping == NULL)
 	{
   		fprintf(stderr, "Failed to allocate the mapping: %s\n", modbus_strerror(errno));
@@ -39,23 +47,13 @@ int main(void)
 
 	mb_mapping->tab_registers[0] = 0xABCD;
 	mb_mapping->tab_registers[1] = 0xDEAD;
-	
-	socket = modbus_tcp_listen(ctx, 1);
-	if (socket == -1)
-	{
-		fprintf(stderr, "Failed to create socket: %s\n", modbus_strerror(errno));
-		modbus_free(ctx);
-	}
-	else
-	{
-		printf("socket create ok\n");
-	}
 
-	if (modbus_tcp_accept(ctx, &socket) == -1)
+	rc = modbus_connect(ctx);
+	if (rc == -1)
 	{
-		fprintf(stderr, "Failed to accept client: %s\n", modbus_strerror(errno));
-		close(socket);
+		fprintf(stderr, "Unable to connect %s\n", modbus_strerror(errno));
 		modbus_free(ctx);
+		return 1;
 	}
 
 	for (;;)
@@ -69,9 +67,9 @@ int main(void)
 		else
 		{
 			/* Connection closed by the client or error */
-			modbus_close(ctx);
-			modbus_tcp_accept(ctx, &socket);
-			//break;
+			//modbus_close(ctx);
+			//modbus_tcp_accept(ctx, &socket);
+			break;
 		}
     	}
 
