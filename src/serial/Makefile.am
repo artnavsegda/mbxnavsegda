@@ -1,1 +1,1 @@
-bin_PROGRAMS = mbsetcoil server mbgetcoil mbget mbset
+bin_PROGRAMS = mbsetcoil server mbgetcoil mbget mbset mbgetfloat
