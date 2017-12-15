@@ -26,6 +26,9 @@ int main(int argc, char *argv[])
 		return -1;
 	}
 
+	while(1)
+	{
+
 	/* Read 5 registers from the address 10 */
 	rc = modbus_read_registers(mb, 360, 2, tab_reg);
 	if (rc == -1) {
@@ -34,6 +37,8 @@ int main(int argc, char *argv[])
 	}
 
 	printf("%f (0X%X) (0x%X)\n", modbus_get_float(&tab_reg[0]), tab_reg[0], tab_reg[1]);
+	sleep(1);
+	}
 
 	modbus_close(mb);
 	modbus_free(mb);
