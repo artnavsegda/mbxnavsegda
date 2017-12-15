@@ -11,19 +11,17 @@ int main(int argc, char *argv[])
 	int rc;
 	int i;
 
-	if (argc != 4)
+	if (argc != 5)
 	{
-		printf("name serial port register and value\n");
+		printf("name serial port, id, register and value\n");
 		exit(1);
 	}
-	int setvalue;
-	sscanf(argv[3],"%d",&setvalue);
-	int setregister;
-	sscanf(argv[2],"%d",&setregister);
+	int setvalue = atoi(argv[4]);
+	int setregister = atoi(argv[3]);
 
 	mb = modbus_new_rtu(argv[1], 9600, 'N', 8, 1);
 
-	modbus_set_slave(mb, 50);
+	modbus_set_slave(mb, atoi(argv[2]));
 
 	if (modbus_connect(mb) == -1)
 	{

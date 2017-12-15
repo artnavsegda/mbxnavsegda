@@ -12,14 +12,14 @@ int main(int argc, char *argv[])
 	modbus_t *ctx;
 	modbus_mapping_t *mb_mapping;
 
-	if (argc == 1)
+	if (argc != 2)
 	{
-		printf("name serial port\n");
+		printf("name serial port and unit id\n");
 		exit(1);
 	}
 
 	ctx = modbus_new_rtu(argv[1], 9600, 'N', 8, 1);
-	modbus_set_slave(ctx, 50);
+	modbus_set_slave(ctx, atoi(argv[2]));
 	modbus_rtu_set_serial_mode(ctx, MODBUS_RTU_RS232);
 
 	if (ctx == NULL)
