@@ -21,7 +21,7 @@ int main(int argc, char *argv[])
 
 	mb = modbus_new_rtu(argv[1], 9600, 'N', 8, 1);
 
-	modbus_set_slave(mb, atoi(argv[2]);
+	modbus_set_slave(mb, atoi(argv[2]));
 
 	if (modbus_connect(mb) == -1)
 	{
